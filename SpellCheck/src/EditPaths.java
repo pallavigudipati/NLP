@@ -60,6 +60,15 @@ public class EditPaths {
 		return printable;
 	}
 
+	public String extractAllEdits(int x, int y, String source, String target) {
+		String toReturn = "";
+		List<Path> multiplePaths = allPaths.get(coordsToString(x, y));
+		for (Path path : multiplePaths) {
+			toReturn += path.extractAllEdits(source, target) + "\n";
+		}
+		return toReturn;
+	}
+
 	public static String pointToString(Point point) {
 		return point.x + ";" + point.y;
 	}

@@ -65,6 +65,10 @@ public class RestrictedEdit {
 		return editPaths.getPrintableForm(source.length(), target.length());
 	}
 
+	public String extractAllEdits() {
+		return editPaths.extractAllEdits(source.length(), target.length(), source, target);
+	}
+
 	public void setCharacterMatrix(int i, int j, int value) {
 		characterMatrix[i][j] = value;
 	}

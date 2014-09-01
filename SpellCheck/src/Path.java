@@ -38,7 +38,32 @@ public class Path {
 		return printable;
 	}
 
-	public void extractAllEdits(String source, String target) {
-		
+	public String extractAllEdits(String source, String target) {
+		String xSource = "~" + source;
+		String xTarget = "~" + target;
+		String toReturn = "";
+		Point prevPoint = pathCoords.get(0);
+		for (int i = 1; i < pathCoords.size(); ++i) {
+			Point currPoint = pathCoords.get(i);
+			String correct = "";
+			String wrong = "";
+			if (prevPoint.x == currPoint.x) {
+				wrong += "" + xTarget.charAt(prevPoint.y) + xTarget.charAt(currPoint.y);
+				correct += "" + xTarget.charAt(prevPoint.y);
+			} else if (prevPoint.y == currPoint.y) {
+				wrong += "" + xSource.charAt(prevPoint.x);
+				correct += "" + xSource.charAt(prevPoint.x) 
+						+ xSource.charAt(currPoint.x); 
+			} else if (prevPoint.x + 1 == currPoint.x && prevPoint.y + 1 == currPoint.y) {
+				wrong += "" + xTarget.charAt(currPoint.y);
+				correct += "" + xSource.charAt(currPoint.x);
+			} else if (prevPoint.x + 2 == currPoint.x && prevPoint.y + 2 == currPoint.y) {
+				wrong += "" + xTarget.charAt(prevPoint.y + 1) + xTarget.charAt(currPoint.y);
+				correct += "" + xSource.charAt(prevPoint.x + 1) + xSource.charAt(currPoint.x);
+			}
+			toReturn += wrong + "|" + correct + " ; ";
+			prevPoint = currPoint;
+		}
+		return toReturn;
 	}
 }
