@@ -1,7 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.io.*;
-import java.util.*;
 
 /* Copyright (c) 2012 Kevin L. Stern
  * 
@@ -99,11 +97,13 @@ public class DamerauLevenshteinAlgorithm {
     }
     int[][] table = new int[source.length()][target.length()];
     Map<Character, Integer> sourceIndexByCharacter = new HashMap<Character, Integer>();
-    if (source.charAt(0) != target.charAt(0)) {
+    if (source.charAt(0) != target.charAt(0)) 
+    {
       table[0][0] = Math.min(replaceCost, deleteCost + insertCost);
     }
     sourceIndexByCharacter.put(source.charAt(0), 0);
-    for (int i = 1; i < source.length(); i++) {
+    for (int i = 1; i < source.length(); i++) 
+    {
       int deleteDistance = table[i - 1][0] + deleteCost;
       int insertDistance = (i + 1) * deleteCost + insertCost;
       int matchDistance = i * deleteCost
@@ -155,9 +155,4 @@ public class DamerauLevenshteinAlgorithm {
     }
     return table[source.length() - 1][target.length() - 1];
   }
-  public static void main(String[] args)
-  {
-	  DamerauLevensheinAlgorithm dla= new DamerauLevenshteinAlgorithm(1,1,1,1);
-  }
-
 }
