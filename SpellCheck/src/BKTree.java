@@ -1,9 +1,20 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.io.*;
 
 public class BKTree
 {
 	private Node Root;
+	public int hit;
+	public void ConstructBKTree(String dictionaryName)throws FileNotFoundException,IOException
+	{
+		BufferedReader br=new BufferedReader(new FileReader(dictionaryName));
+		String line;
+		while((line=br.readLine())!=null)
+		{
+			String words[]=line.split(",");
+			Add(words[0]);
+		}
+	}
 	public void Add(String word)
 	{
 		if(Root==null)
@@ -27,12 +38,14 @@ public class BKTree
 	}
 	public ArrayList<String> Search(String word,int d)
 	{
+		this.hit=0;
 		ArrayList<String> rtn = new ArrayList<String>();
 		RecursiveSearch(Root,rtn,word,d);
 		return rtn;
 	}
 	private void RecursiveSearch(Node node,ArrayList<String> rtn,String word,int d)
 	{
+		this.hit+=1;
 		DamerauLevenshteinAlgorithm dl = new DamerauLevenshteinAlgorithm(1, 1, 1, 1);
 		int curDist = dl.execute(node.Word,word);
 		int minDist=curDist-d;
@@ -92,17 +105,22 @@ class Node
 }
 class test
 {
-	public static void main(String argv[])
+	public static void main(String argv[]) throws FileNotFoundException,IOException
 	{
 		BKTree bktree=new BKTree();
-		bktree.Add("book");
-		bktree.Add("books");
-		bktree.Add("cake");
-		bktree.Add("boo");
-		bktree.Add("cape");
-		bktree.Add("boon");
-		bktree.Add("cook");
-		bktree.Add("cart");
-		System.out.println(bktree.Search("caqe", 2));
-	}	
+		String typo= "fiscal";
+		bktree.ConstructBKTree("cleaned_counts.txt");
+		final long BeginTime=System.currentTimeMillis();
+		System.out.println(bktree.Search(typo, 3));
+		final long EndTime=System.currentTimeMillis();
+		System.out.println(EndTime-BeginTime);
+		System.out.println(bktree.hit);
+		GetMetaPhone getmetaphone = new GetMetaPhone();
+		getmetaphone.buildPhoneticIndex("cleaned_counts.txt");
+		final long BeginPhoneticTime=System.currentTimeMillis();
+		ArrayList<String> phoneticCandidates=getmetaphone.phoneticIndex.get(GetMetaPhone.encode(typo));
+		final long EndPhoneticTime=System.currentTimeMillis();
+		System.out.println(EndPhoneticTime-BeginPhoneticTime);
+		System.out.println(phoneticCandidates);
+	}
 }
