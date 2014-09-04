@@ -155,4 +155,4 @@ public class DamerauLevenshteinAlgorithm {
     }
     return table[source.length() - 1][target.length() - 1];
   }
-}
+}	
