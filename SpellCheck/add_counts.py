@@ -4,7 +4,7 @@ for line in all_words:
 	line = line.strip('\n')
 	words[line] = '0'
 
-counts = open('ngrams/count_1w.txt', 'r')
+counts = open('ngrams/count_big.txt', 'r')
 for line in counts:
 	parts = line.split('\t')
 	if (len(parts) < 2):

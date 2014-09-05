@@ -10,23 +10,22 @@ public class Ranker {
 	private static HashMap<String, Integer> unigramCounts;
 	private static HashMap<String, Integer> bigramCounts;
 	private static HashMap<String, Integer> wordCounts;
-	private static int totalWords = 40000000; // TODO change
+	private static int totalWords = 1043339; // for cleaned-counts-big
 
 	public List<Double> getScores(List<String> candidates, String incorrectWord) {
 		List<Double> scores = new ArrayList<Double>();
 		for (String candidate : candidates) {
 			RestrictedEdit restrictedEdit = new RestrictedEdit();
 			double likelihood = restrictedEdit.getLikelihood(priors, unigramCounts, bigramCounts);
-			// TODO: We need to divide it by total number of words (not that imp) and SMOOTH it.
-			// For now just putting 0.5 for non-existent values to avoid runtime errors.
-			double wordCount = wordCounts.get(candidate) == null ? 0.5 : wordCounts.get(candidate);
-			scores.add(likelihood * wordCount);
+			// TODO: Better method for smoothing?.
+			double frequency = (wordCounts.get(candidate) + 0.5) / totalWords;
+			scores.add(likelihood * frequency);
 		}
 		return scores;
 	}
 
 	public void loadData() {
-		loadFiles("cleaned_counts.txt", wordCounts);
+		loadFiles("cleaned_counts_big.txt", wordCounts);
 		loadFiles("priors.txt", priors);
 		loadFiles("unigram_counts.txt", unigramCounts);
 		loadFiles("bigram_counts.txt", bigramCounts);
@@ -41,6 +40,7 @@ public class Ranker {
 				String[] parts = line.split(",");
 				table.put(parts[0], Integer.parseInt(parts[1]));
 			}
+			reader.close();
 		} catch (Exception e) {
 			System.out.println("Not able to read files");
 		}
