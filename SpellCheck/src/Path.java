@@ -41,8 +41,8 @@ public class Path {
 	}
 
 	public List<List<String>> extractAllEdits(String source, String target) {
-		String xSource = " " + source;
-		String xTarget = " " + target;
+		String xSource = "~" + source;
+		String xTarget = "~" + target;
 		List<List<String>> allEdits = new ArrayList<List<String>>();
 		Point prevPoint = pathCoords.get(0);
 		for (int i = 1; i < pathCoords.size(); ++i) {
@@ -89,9 +89,16 @@ public class Path {
 			// 		  => x|xy => Deletion : norm = bigramCount(xy)
 			// 		  => x|y => Substitution: norm = unigramCount(y)
 			// 		  => xy|yx => Reversal : norm = bigramCount(yx)
-			int normalization = 0;
-			int freq = priors.get(typeEdit.get(1));
-			String correct = (typeEdit.get(1).split("|"))[1];
+			String edit = typeEdit.get(1);
+			String[] parts = edit.split("\\|");
+			String correct = parts[1];
+			String wrong = parts[0];
+			if (correct.equals(wrong)) {
+				continue;
+			}
+			double normalization = 0;
+			double freq = priors.get(typeEdit.get(1));
+			
 			if (typeEdit.get(0).equals("I") || typeEdit.get(0).equals("S")) {
 				normalization = unigramCounts.get(correct);
 			} else if (typeEdit.get(0).equals("D") || typeEdit.get(0).equals("R")) {

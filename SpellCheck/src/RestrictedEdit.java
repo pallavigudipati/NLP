@@ -19,7 +19,7 @@ public class RestrictedEdit {
 		return editDistance(source.length(), target.length());
 	}
 
-	public int editDistance(int i, int j) {
+	private int editDistance(int i, int j) {
 		if (characterMatrix[i][j] != -1) {
 			return characterMatrix[i][j];
 		}
@@ -50,7 +50,7 @@ public class RestrictedEdit {
 		return minEdit;
 	}
 
-	public void updateForNormalTransitions(int i, int j, int minEdit, int cost) {
+	private void updateForNormalTransitions(int i, int j, int minEdit, int cost) {
 		if (minEdit == characterMatrix[i - 1][j] + 1) {
 			editPaths.updatePaths(i - 1, j, i, j);
 		}

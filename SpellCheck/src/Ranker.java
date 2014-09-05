@@ -6,16 +6,18 @@ import java.util.List;
 
 // TODO: generate prior file.
 public class Ranker {
-	private static HashMap<String, Integer> priors;
-	private static HashMap<String, Integer> unigramCounts;
-	private static HashMap<String, Integer> bigramCounts;
-	private static HashMap<String, Integer> wordCounts;
+	private HashMap<String, Integer> priors;
+	private HashMap<String, Integer> unigramCounts;
+	private HashMap<String, Integer> bigramCounts;
+	private HashMap<String, Integer> wordCounts;
 	private static int totalWords = 1043339; // for cleaned-counts-big
 
 	public List<Double> getScores(List<String> candidates, String incorrectWord) {
 		List<Double> scores = new ArrayList<Double>();
 		for (String candidate : candidates) {
 			RestrictedEdit restrictedEdit = new RestrictedEdit();
+			int distance = restrictedEdit.getDistance(candidate, incorrectWord);
+			System.out.println(distance);
 			double likelihood = restrictedEdit.getLikelihood(priors, unigramCounts, bigramCounts);
 			// TODO: Better method for smoothing?.
 			double frequency = (wordCounts.get(candidate) + 0.5) / totalWords;
@@ -25,14 +27,17 @@ public class Ranker {
 	}
 
 	public void loadData() {
+		wordCounts = new HashMap<String, Integer>();
+		priors = new HashMap<String, Integer>();
+		unigramCounts = new HashMap<String, Integer>();
+		bigramCounts = new HashMap<String, Integer>();
 		loadFiles("cleaned_counts_big.txt", wordCounts);
-		loadFiles("priors.txt", priors);
+		loadFiles("cleaned_count_1edit.txt", priors);
 		loadFiles("unigram_counts.txt", unigramCounts);
 		loadFiles("bigram_counts.txt", bigramCounts);
 	} 
 
 	private void loadFiles(String filename, HashMap<String, Integer> table) {
-		table = new HashMap<String, Integer>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			String line = null;

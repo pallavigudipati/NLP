@@ -8,5 +8,8 @@ public class Test {
 		Ranker ranker = new Ranker();
 		ranker.loadData();
 		List<Double> scores = ranker.getScores(candidates, "yello");
+		for (int i = 0; i < candidates.size(); ++i) {
+			System.out.println(candidates.get(i) + "\t" + scores.get(i));
+		}
 	}
 }
