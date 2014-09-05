@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class RestrictedEdit {
@@ -67,6 +68,13 @@ public class RestrictedEdit {
 
 	public String extractAllEdits() {
 		return editPaths.extractAllEdits(source.length(), target.length(), source, target);
+	}
+
+	public double getLikelihood(HashMap<String, Integer> priors,
+			HashMap<String, Integer> unigramCounts,
+			HashMap<String, Integer> bigramCounts) {
+		return editPaths.getLikelihood(priors, unigramCounts, bigramCounts,
+				source, target);
 	}
 
 	public void setCharacterMatrix(int i, int j, int value) {

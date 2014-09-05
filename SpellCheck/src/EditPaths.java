@@ -69,6 +69,19 @@ public class EditPaths {
 		return toReturn;
 	}
 
+	public double getLikelihood(HashMap<String, Integer> priors,
+			HashMap<String, Integer> unigramCounts,
+			HashMap<String, Integer> bigramCounts, String source, String target) {
+		List<Path> multiplePaths = allPaths.get(coordsToString(source.length(),
+				target.length()));
+		double totalLikelihood = 0;
+		for (Path path : multiplePaths) {
+			totalLikelihood += path.getLikelihood(priors, unigramCounts,
+					bigramCounts, source, target);
+		}
+		return totalLikelihood;
+	}
+
 	public static String pointToString(Point point) {
 		return point.x + ";" + point.y;
 	}
