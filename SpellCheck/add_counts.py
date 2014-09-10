@@ -2,6 +2,7 @@ all_words = open('all-words-cleaned.txt', 'r')
 words = {}
 for line in all_words:
 	line = line.strip('\n')
+	line = line.lower()
 	words[line] = '0'
 
 counts = open('ngrams/count_big.txt', 'r')
@@ -11,6 +12,7 @@ for line in counts:
 		parts = parts[0].split(' ')
 #print parts[0]
 
+	parts[0] = parts[0].lower()
 	if words.has_key(parts[0]):
 		words[parts[0]] = parts[len(parts) - 1].strip('\n')
 

@@ -14,13 +14,20 @@ public class Ranker {
     private HashMap<String, Integer> wordCounts;
     private static int totalWords = 1043339; // for cleaned-counts-big
 
+    public Ranker(List<HashMap> data) {
+        wordCounts = data.get(0);
+        priors = data.get(1);
+        unigramCounts = data.get(2);
+        bigramCounts = data.get(3);
+    }
+
     public List<List<Object>> getScores(List<String> candidates, String incorrectWord) {
         List<List<Object>> scores = new ArrayList<List<Object>>();
         for (String candidate : candidates) {
-            System.out.println(candidate);
+            // System.out.println(candidate);
             RestrictedEdit restrictedEdit = new RestrictedEdit();
             int distance = restrictedEdit.getDistance(candidate, incorrectWord);
-            System.out.println(distance);
+            // System.out.println(distance);
             double likelihood = restrictedEdit.getLikelihood(priors,
                     unigramCounts, bigramCounts);
             // TODO: Better method for smoothing?.
@@ -38,7 +45,7 @@ public class Ranker {
         });
         return scores;
     }
-
+/*
     public void loadData() {
         wordCounts = new HashMap<String, Integer>();
         priors = new HashMap<String, Integer>();
@@ -50,6 +57,7 @@ public class Ranker {
         loadFiles("bigram_counts.txt", bigramCounts);
     }
 
+    
     private void loadFiles(String filename, HashMap<String, Integer> table) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -63,7 +71,7 @@ public class Ranker {
             System.out.println("Not able to read files");
         }
     }
-
+*/
     /*
      * public void loadUnigrams(String filename) { unigramCounts = new
      * HashMap<String, Integer>(); try { BufferedReader reader = new
