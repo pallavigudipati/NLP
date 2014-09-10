@@ -7,9 +7,9 @@ import java.util.List;
 public class Test {
 	public static void main(String[] args)throws FileNotFoundException,IOException {
 		BKTree bktree=new BKTree();
-		String typo= "jello";
+		String typo= "volly";
 		bktree.ConstructBKTree("cleaned_counts_big.txt");
-		List<String> candidates = new ArrayList<String>(bktree.Search(typo, 2));
+		List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
 		Ranker ranker = new Ranker();
 		ranker.loadData();
 		List<Double> scores = ranker.getScores(candidates, typo);
