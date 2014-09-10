@@ -15,6 +15,7 @@ public class Ranker {
 	public List<Double> getScores(List<String> candidates, String incorrectWord) {
 		List<Double> scores = new ArrayList<Double>();
 		for (String candidate : candidates) {
+			System.out.println(candidate);
 			RestrictedEdit restrictedEdit = new RestrictedEdit();
 			int distance = restrictedEdit.getDistance(candidate, incorrectWord);
 			System.out.println(distance);

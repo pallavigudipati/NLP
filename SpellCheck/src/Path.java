@@ -97,9 +97,15 @@ public class Path {
 				continue;
 			}
 			double normalization = 0;
-			double freq = priors.get(typeEdit.get(1));
-			
+			//System.out.println("Type of Edit"+typeEdit.get(1));
+			// TODO: Handle edit zero counts in a more sane fashion
+			double freq = 0.0;
+			if(priors.get(typeEdit.get(1))!=null)
+			{
+				freq=priors.get(typeEdit.get(1));
+			}
 			if (typeEdit.get(0).equals("I") || typeEdit.get(0).equals("S")) {
+				System.out.println("Unigram"+correct);
 				normalization = unigramCounts.get(correct);
 			} else if (typeEdit.get(0).equals("D") || typeEdit.get(0).equals("R")) {
 				normalization = bigramCounts.get(correct);
