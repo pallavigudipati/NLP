@@ -5,7 +5,8 @@ public class BKTree
 {
 	private Node Root;
 	public int hit;
-	public void ConstructBKTree(String dictionaryName)throws FileNotFoundException,IOException
+
+    public void ConstructBKTree(String dictionaryName)throws FileNotFoundException,IOException
 	{
 		BufferedReader br=new BufferedReader(new FileReader(dictionaryName));
 		String line;
