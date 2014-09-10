@@ -105,7 +105,7 @@ public class Path {
 				freq=priors.get(typeEdit.get(1));
 			}
 			if (typeEdit.get(0).equals("I") || typeEdit.get(0).equals("S")) {
-				System.out.println("Unigram"+correct);
+				//System.out.println("Unigram"+correct);
 				normalization = unigramCounts.get(correct);
 			} else if (typeEdit.get(0).equals("D") || typeEdit.get(0).equals("R")) {
 				normalization = bigramCounts.get(correct);

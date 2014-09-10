@@ -2,12 +2,17 @@ words = open('ngrams/count_big.txt','r')
 
 bigrams = {}
 unigrams = {}
-
+unigrams['~']=0
 for line in words:
 	word_count = line.split()
 	word = word_count[0]
 	count = int(word_count[1])
-
+	unigrams['~']+=count
+	beginner_bigram='~'+word[0]
+	if beginner_bigram in bigrams:
+		bigrams[beginner_bigram]+=count
+	else:
+		bigrams[beginner_bigram]=count
 	for char in word:
 		if unigrams.has_key(char):
 			unigrams[char] = unigrams[char] + count
