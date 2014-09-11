@@ -23,7 +23,7 @@ public class Test {
             Ranker ranker = new Ranker(data);
             List<List<Object>> scores = ranker.getScores(candidates, typo);
             long endTime = System.currentTimeMillis();
-            for (int i = 0; i < candidates.size(); ++i) {
+            for (int i = 0; i < candidates.size() && i < 20; ++i) {
                 if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
                     System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
                 }
