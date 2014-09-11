@@ -7676,7 +7676,7 @@ parching,0
 thrummed,1
 rote,0
 likes,8
-trucked,0
+shuns,0
 revisits,0
 glare,5
 homy,0
@@ -7832,7 +7832,7 @@ deter,2
 stepsisters,0
 phosphorus,1
 venerated,0
-shuns,0
+kHz,0
 asocial,0
 shunt,0
 tomcat,0
@@ -20402,7 +20402,6 @@ quintette,0
 palpitates,0
 pursuers,2
 endorsements,0
-db,0
 unfair,10
 ecologist,0
 vernaculars,0
@@ -20413,6 +20412,7 @@ infrequent,4
 wham,0
 chastened,1
 stratification,0
+dB,0
 verdigrises,0
 irregularities,1
 conchs,0
@@ -32632,7 +32632,6 @@ hospitalizations,0
 contemplates,0
 betas,0
 wonted,1
-khz,0
 narcissism,0
 nulls,0
 congratulation,1
@@ -43385,6 +43384,7 @@ perforce,0
 circularizing,0
 blazers,2
 mollify,0
+eBay,0
 completer,0
 completes,0
 airworthiest,0
@@ -46729,7 +46729,6 @@ bureaucracies,0
 pollen,3
 rededicate,0
 carport,0
-spaceship,0
 scrupulous,2
 nanoseconds,0
 canted,0
@@ -48591,6 +48590,7 @@ motorizing,0
 agglomerate,0
 matte,0
 blending,3
+trucked,0
 sabling,0
 prominent,76
 postmasters,0
@@ -52334,7 +52334,7 @@ behaved,17
 instrumentals,0
 forensic,0
 medley,0
-ebay,0
+spaceship,0
 shes,0
 unmistakably,1
 rebroadcast,0
