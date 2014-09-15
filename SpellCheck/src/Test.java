@@ -7,9 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import libsvm.LibSVM;
+import libsvm.svm_parameter;
+import net.sf.javaml.classification.Classifier;
+import edu.berkeley.compbio.jlibsvm.SVM;
+import edu.berkeley.compbio.jlibsvm.SvmProblem;
+import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
+import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblem;
+import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
+
 public class Test {
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
+        /*
         BKTree bktree = new BKTree();
         // String typo = "aisel";
         bktree.ConstructBKTree("cleaned_counts_big.txt");
@@ -29,8 +39,11 @@ public class Test {
                 }
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }
-    }
+        }*/
+        String query = "my very educated mother just showed us nine planets";
+        String[] words = query.split(" ");
+        double weight = generateWeight(words, 3);
+     }
 
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
