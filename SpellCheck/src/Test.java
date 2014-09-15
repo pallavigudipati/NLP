@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+<<<<<<< HEAD
 import weka.core.tokenizers.NGramTokenizer;
 import libsvm.LibSVM;
 import libsvm.svm_parameter;
@@ -17,12 +18,16 @@ import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblem;
 import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
 
+=======
+>>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 public class Test {
+
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
-       
         BKTree bktree = new BKTree();
+
         // String typo = "aisel";
+        /*
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
 
@@ -38,14 +43,27 @@ public class Test {
                 if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
                     System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
                 }
+
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }
-       
-        // String query = "my very educated mother just showed us nine planets";
-        // String[] words = query.split(" ");
-        // double weight = generateWeight(words, 3);
-     }
+        }*/
+        ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
+        confusionsetloader.loadFiles("confusion_sets.csv");
+        confusionsetloader.populateIndex();
+        System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
+        confusionsetloader.addNGramCounts("w2_.txt");
+        confusionsetloader.addNGramCounts("w3_.txt");
+        confusionsetloader.addNGramCounts("w4_.txt");
+        confusionsetloader.addNGramCounts("w5_.txt");
+        System.out.println(confusionsetloader.nGramCounts.get("a beam"));
+        String query = "piece of mind";
+        String[] words = query.split(" ");
+        double weight1 = confusionsetloader.generateWeight(words, 0);
+        double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
+        System.out.println(weight1);
+        System.out.println(weight2);
+    }
+>>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
