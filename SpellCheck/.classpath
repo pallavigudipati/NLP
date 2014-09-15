@@ -2,5 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/jlibsvm-0.902.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/javaml-0.1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/libsvm.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/weka.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/ajt-1.20.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/commons-math-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/Jama-1.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

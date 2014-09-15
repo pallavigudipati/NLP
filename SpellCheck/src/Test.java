@@ -9,7 +9,10 @@ import java.util.Scanner;
 
 public class Test {
 
-    public static void main(String[] args) throws FileNotFoundException,IOException {
+    public static void main(String[] args) throws FileNotFoundException,
+            IOException {
+        /*
+>>>>>>> 627b2895fb90109b590eec48f41a256954b29fbc
         BKTree bktree = new BKTree();
 
         // String typo = "aisel";
@@ -42,6 +45,12 @@ public class Test {
         confusionsetloader.addNGramCounts("w4_.txt");
         confusionsetloader.addNGramCounts("w5_.txt");
         System.out.println(confusionsetloader.nGramCounts.get("a beam"));
+        String query = "piece of mind";
+        String[] words = query.split(" ");
+        double weight1 = confusionsetloader.generateWeight(words, 0);
+        double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
+        System.out.println(weight1);
+        System.out.println(weight2);
     }
 
     public static List<HashMap> loadData() {
