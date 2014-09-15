@@ -3,31 +3,35 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class Test {
 
-    public static void main(String[] args) throws FileNotFoundException,
-            IOException {
+    public static void main(String[] args) throws FileNotFoundException,IOException {
         BKTree bktree = new BKTree();
-        String typo = "respe";
+
+        // String typo = "aisel";
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
-        long startTime = System.currentTimeMillis();
-        List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
-        Ranker ranker = new Ranker(data);
-        List<List<Object>> scores = ranker.getScores(candidates, typo);
-        long endTime = System.currentTimeMillis();
-        for (int i = 0; i < candidates.size(); ++i) {
-            if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
-                System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
+
+        Scanner terminalInput = new Scanner(System.in);
+        while(true) {
+            String typo = terminalInput.nextLine();;
+            long startTime = System.currentTimeMillis();
+            List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
+            Ranker ranker = new Ranker(data);
+            List<List<Object>> scores = ranker.getScores(candidates, typo);
+            long endTime = System.currentTimeMillis();
+            for (int i = 0; i < candidates.size() && i < 20; ++i) {
+                if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
+                    System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
+                }
+
             }
+            System.out.println("Total time taken: " + (endTime - startTime));
         }
-        System.out.println("Total time taken: " + (endTime - startTime));
     }
 
     public static List<HashMap> loadData() {

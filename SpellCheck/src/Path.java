@@ -114,7 +114,13 @@ public class Path {
                 normalization = unigramCounts.get(correct);
             } else if (typeEdit.get(0).equals("D")
                     || typeEdit.get(0).equals("R")) {
-                normalization = bigramCounts.get(correct);
+            	//System.out.println("Bigram"+correct);
+            	normalization = 1; //Bug in code
+            	if(bigramCounts.get(correct)!=null)
+            	{
+                   normalization = bigramCounts.get(correct);
+            	}
+            	
             }
             likelihood *= freq / normalization;
         }
