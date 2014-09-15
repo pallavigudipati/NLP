@@ -13,6 +13,7 @@ public class Test {
         BKTree bktree = new BKTree();
 
         // String typo = "aisel";
+        /*
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
 
@@ -31,7 +32,16 @@ public class Test {
 
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }
+        }*/
+        ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
+        confusionsetloader.loadFiles("confusion_sets.csv");
+        confusionsetloader.populateIndex();
+        System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
+        confusionsetloader.addNGramCounts("w2_.txt");
+        confusionsetloader.addNGramCounts("w3_.txt");
+        confusionsetloader.addNGramCounts("w4_.txt");
+        confusionsetloader.addNGramCounts("w5_.txt");
+        System.out.println(confusionsetloader.nGramCounts.get("a beam"));
     }
 
     public static List<HashMap> loadData() {
