@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import weka.core.tokenizers.NGramTokenizer;
 import libsvm.LibSVM;
 import libsvm.svm_parameter;
 import net.sf.javaml.classification.Classifier;
@@ -19,7 +20,7 @@ import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
 public class Test {
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
-        /*
+       
         BKTree bktree = new BKTree();
         // String typo = "aisel";
         bktree.ConstructBKTree("cleaned_counts_big.txt");
@@ -39,10 +40,11 @@ public class Test {
                 }
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }*/
-        String query = "my very educated mother just showed us nine planets";
-        String[] words = query.split(" ");
-        double weight = generateWeight(words, 3);
+        }
+       
+        // String query = "my very educated mother just showed us nine planets";
+        // String[] words = query.split(" ");
+        // double weight = generateWeight(words, 3);
      }
 
     public static List<HashMap> loadData() {
