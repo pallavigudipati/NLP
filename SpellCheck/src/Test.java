@@ -7,12 +7,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+<<<<<<< HEAD
+import weka.core.tokenizers.NGramTokenizer;
+import libsvm.LibSVM;
+import libsvm.svm_parameter;
+import net.sf.javaml.classification.Classifier;
+import edu.berkeley.compbio.jlibsvm.SVM;
+import edu.berkeley.compbio.jlibsvm.SvmProblem;
+import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
+import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblem;
+import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
+
+=======
+>>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 public class Test {
 
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
+<<<<<<< HEAD
       
     	/*
+=======
+>>>>>>> e663c15324a59662eb4866742fdfb9c577636e45
         BKTree bktree = new BKTree();
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
@@ -63,6 +79,7 @@ public class Test {
         System.out.println(confusionsetloader.weighNGrams(nGramList));
         List<List<Object>> phrase_scores=confusionsetloader.spellCheckPhrase();
     }
+>>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
