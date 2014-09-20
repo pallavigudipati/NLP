@@ -11,12 +11,9 @@ public class Test {
 
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
-        /*
->>>>>>> 627b2895fb90109b590eec48f41a256954b29fbc
+      
+    	/*
         BKTree bktree = new BKTree();
-
-        // String typo = "aisel";
-        /*
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
 
@@ -35,22 +32,36 @@ public class Test {
 
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }*/
+            break;
+        }
+        */
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
+        /*
         System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
         confusionsetloader.addNGramCounts("w2_.txt");
         confusionsetloader.addNGramCounts("w3_.txt");
         confusionsetloader.addNGramCounts("w4_.txt");
         confusionsetloader.addNGramCounts("w5_.txt");
         System.out.println(confusionsetloader.nGramCounts.get("a beam"));
-        String query = "piece of mind";
-        String[] words = query.split(" ");
-        double weight1 = confusionsetloader.generateWeight(words, 0);
-        double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
+        String query1 = "chocolate cake";
+        String query2 = "chocolate fake";
+        String[] words1 = query1.split(" ");
+        String[] words2 = query2.split(" ");
+        double weight1 = confusionsetloader.generateWeight(words1,1);
+        double weight2 = confusionsetloader.generateWeight(words2,1);
         System.out.println(weight1);
-        System.out.println(weight2);
+        System.out.println(weight2);*/
+        String[] words3 = "peace of mind".split(" ");
+        String[] words4 = "peace of mind".split(" ");
+        confusionsetloader.generateCandidatePhrases("peace of mind");
+        confusionsetloader.generateConfusionIndices("peace of mind");
+        System.out.println(confusionsetloader.generateWeight(words3,0));
+        ArrayList<String> nGramList=confusionsetloader.generateNGrams(words4,0);
+        System.out.println(nGramList);
+        System.out.println(confusionsetloader.weighNGrams(nGramList));
+        List<List<Object>> phrase_scores=confusionsetloader.spellCheckPhrase();
     }
 
     public static List<HashMap> loadData() {
