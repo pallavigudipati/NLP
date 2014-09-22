@@ -5,7 +5,7 @@ public class BKTree
 {
 	private Node Root;
 	public int hit;
-
+	public HashMap<String,Integer> wordDictionary=new HashMap<String,Integer>();
     public void ConstructBKTree(String dictionaryName)throws FileNotFoundException,IOException
 	{
 		BufferedReader br=new BufferedReader(new FileReader(dictionaryName));
@@ -14,6 +14,7 @@ public class BKTree
 		{
 			String words[]=line.split(",");
 			Add(words[0]);
+			wordDictionary.put(words[0],1);
 		}
 	}
 	public void Add(String word)

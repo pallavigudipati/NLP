@@ -40,7 +40,15 @@ public class Test {
         }*/
         String typedPhrase=terminalInput.nextLine();
         ArrayList<Integer> typoPositions=new ArrayList<Integer>();
-        typoPositions.add(0);
+        //typoPositions.add(0);
+        String[] phraseWordArray=typedPhrase.split(" ");
+        for(int i=0;i<phraseWordArray.length;i++)
+        {
+        	if(!bktree.wordDictionary.containsKey(phraseWordArray[i]))
+        	{
+        		typoPositions.add(i);
+        	}
+        }
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
