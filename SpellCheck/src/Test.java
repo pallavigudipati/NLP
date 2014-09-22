@@ -9,17 +9,24 @@ import java.util.Scanner;
 
 public class Test {
 
-    public static void main(String[] args) throws FileNotFoundException,
-            IOException {
-        BKTree bktree = new BKTree();
-
+    public static void main(String[] args) {
         // String typo = "aisel";
-        bktree.ConstructBKTree("cleaned_counts_big.txt");
+        BKTree bktree = new BKTree();
+        try {
+            bktree.ConstructBKTree("cleaned_counts_big.txt");
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         List<HashMap> data = loadData();
 
         Scanner terminalInput = new Scanner(System.in);
+        /*
         while(true) {
-            String typo = terminalInput.nextLine();;
+            String typo = terminalInput.nextLine();
             long startTime = System.currentTimeMillis();
             List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
             Ranker ranker = new Ranker(data);
@@ -33,15 +40,44 @@ public class Test {
             }
             System.out.println("Total time taken: " + (endTime - startTime));
         }
-        /*
+            break;
+        }*/
+        String typedPhrase=terminalInput.nextLine();
+        ArrayList<Integer> typoPositions=new ArrayList<Integer>();
+        typoPositions.add(0);
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
         System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
-        confusionsetloader.addNGramCounts("w2_.txt");
-        confusionsetloader.addNGramCounts("w3_.txt");
-        confusionsetloader.addNGramCounts("w4_.txt");
-        confusionsetloader.addNGramCounts("w5_.txt");
+        confusionsetloader.addNGramCounts("ngram-counts/w2_.txt");
+        confusionsetloader.addNGramCounts("ngram-counts/w3_.txt");
+        confusionsetloader.addNGramCounts("ngram-counts/w4_.txt");
+        confusionsetloader.addNGramCounts("ngram-counts/w5_.txt");
+        for(int typoPosition:typoPositions)
+        {
+        	String[] phraseWords=typedPhrase.split(" ");
+        	List<String> candidates = new ArrayList<String>(bktree.Search(phraseWords[typoPosition], 3));
+            Ranker ranker = new Ranker(data);
+            List<List<Object>> scores = ranker.getScores(candidates,phraseWords[typoPosition]);
+            System.out.println(scores);
+            int scoreCandidateCounter=0;
+            for(List<Object> scoreCandidate:scores)
+            {
+            	phraseWords[typoPosition]=(String)scoreCandidate.get(0);
+            	double scoreCandidateWeight=confusionsetloader.generateWeight(phraseWords, typoPosition);
+            	double editWeight=(Double)scoreCandidate.get(1);
+            	//scoreCandidateWeight=0.0;
+            	double logEditWeight=Math.log(editWeight);
+            	double totalWeight=logEditWeight+scoreCandidateWeight;
+            	System.out.println(scoreCandidate.get(0)+" "+totalWeight+" "+logEditWeight+" "+scoreCandidateWeight);
+            	scoreCandidateCounter+=1;
+            	if(scoreCandidateCounter>10)
+            	{
+            		break;
+            	}
+            }
+        }
+
         System.out.println(confusionsetloader.nGramCounts.get("a beam"));
         String query = "piece of mind";
         String[] words = query.split(" ");
@@ -49,7 +85,25 @@ public class Test {
         double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
         System.out.println(weight1);
         System.out.println(weight2);
-        */
+
+        String query1 = "chocolate cake";
+        String query2 = "chocolate fake";
+        String[] words1 = query1.split(" ");
+        String[] words2 = query2.split(" ");
+        //double weight1 = confusionsetloader.generateWeight(words1,1);
+        //double weight2 = confusionsetloader.generateWeight(words2,1);
+        //System.out.println(weight1);
+        //System.out.println(weight2);	
+        String[] words3 = "roof of the house".split(" ");
+        String[] words4 = "peace of mind".split(" ");
+        confusionsetloader.generateCandidatePhrases("peace of mind");
+        confusionsetloader.generateConfusionIndices("peace of mind");
+        System.out.println(confusionsetloader.generateWeight(words3,0));
+        ArrayList<String> nGramList=confusionsetloader.generateNGrams(words4,0);
+        System.out.println(nGramList);
+        System.out.println(confusionsetloader.weighNGrams(nGramList));
+        confusionsetloader.spellCheckPhrase("arid dessert");
+        
     }
 
     public static List<HashMap> loadData() {
@@ -82,5 +136,4 @@ public class Test {
             System.out.println("Not able to read files");
         }
     }
-
 }
