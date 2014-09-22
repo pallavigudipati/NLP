@@ -7,115 +7,62 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.stanford.nlp.util.StringUtils;
+
 public class Test {
 
     public static void main(String[] args) {
-        // String typo = "aisel";
         BKTree bktree = new BKTree();
         try {
             bktree.ConstructBKTree("cleaned_counts_big.txt");
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        List<HashMap> data = loadData();
-
+        List<HashMap> data = Utils.loadCountsData();
         Scanner terminalInput = new Scanner(System.in);
-        /*
-        while(true) {
-            String typo = terminalInput.nextLine();
-            long startTime = System.currentTimeMillis();
-            List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
-            Ranker ranker = new Ranker(data);
-            List<List<Object>> scores = ranker.getScores(candidates, typo);
-            long endTime = System.currentTimeMillis();
-            for (int i = 0; i < candidates.size() && i < 20; ++i) {
-                if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
-                    System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
-                }
-
-            }
-            System.out.println("Total time taken: " + (endTime - startTime));
-        }
-            break;
-        }*/
-        String typedPhrase=terminalInput.nextLine();
-        ArrayList<Integer> typoPositions=new ArrayList<Integer>();
-        //typoPositions.add(0);
-        String[] phraseWordArray=typedPhrase.split(" ");
-        for(int i=0;i<phraseWordArray.length;i++)
-        {
-        	if(!bktree.wordDictionary.containsKey(phraseWordArray[i]))
-        	{
-        		typoPositions.add(i);
-        	}
-        }
-        ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
-        /*
-        confusionsetloader.loadFiles("confusion_sets.csv");
-        confusionsetloader.populateIndex();
-        System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
-        confusionsetloader.addNGramCounts("ngram-counts/w2_.txt");
-        confusionsetloader.addNGramCounts("ngram-counts/w3_.txt");
-        confusionsetloader.addNGramCounts("ngram-counts/w4_.txt");
-        confusionsetloader.addNGramCounts("ngram-counts/w5_.txt");
-        */
-        for(int typoPosition:typoPositions)
-        {
-        	String[] phraseWords=typedPhrase.split(" ");
-        	List<String> candidates = new ArrayList<String>(bktree.Search(phraseWords[typoPosition], 3));
-            Ranker ranker = new Ranker(data);
-            List<List<Object>> scores = ranker.getScores(candidates,phraseWords[typoPosition]);
-            System.out.println(scores);
-            int scoreCandidateCounter=0;
-            for(List<Object> scoreCandidate:scores)
+        POSTagger tagger = new POSTagger();
+        ConfusionSetLoader confusionsetloader = new ConfusionSetLoader();
+        //  TODO: Make everything into lower case
+        while (true) {
+            String typedPhraseRaw=terminalInput.nextLine();
+            ArrayList<Integer> typoPositions=new ArrayList<Integer>();
+            String[] phraseWordArrayRaw = typedPhraseRaw.split(" "); 
+            for(int i=0;i<phraseWordArrayRaw.length;i++)
             {
-            	phraseWords[typoPosition]=(String)scoreCandidate.get(0);
-            	double scoreCandidateWeight=confusionsetloader.generateWeight(phraseWords, typoPosition);
-            	double editWeight=(Double)scoreCandidate.get(1);
-            	//scoreCandidateWeight=0.0;
-            	double logEditWeight=Math.log(editWeight);
-            	double totalWeight=logEditWeight+scoreCandidateWeight;
-            	System.out.println(scoreCandidate.get(0)+" "+totalWeight+" "+logEditWeight+" "+scoreCandidateWeight);
-            	scoreCandidateCounter+=1;
-            	if(scoreCandidateCounter>10)
+            	if(!bktree.wordDictionary.containsKey(phraseWordArrayRaw[i]))
             	{
-            		break;
+            		typoPositions.add(i);
             	}
             }
+            for(int typoPosition:typoPositions)
+            {
+            	List<String> candidates = new ArrayList<String>(bktree.Search(phraseWordArrayRaw[typoPosition], 3));
+                Ranker ranker = new Ranker(data);
+                List<List<Object>> scores = ranker.getScores(candidates,phraseWordArrayRaw[typoPosition]);
+                // System.out.println(scores);
+                int scoreCandidateCounter=0;
+                for(List<Object> scoreCandidate:scores)
+                {
+                	phraseWordArrayRaw[typoPosition]=(String)scoreCandidate.get(0);
+                	List<String> phaseWordList = tagger.tagSentence(StringUtils.join(phraseWordArrayRaw, " "));
+                    String[] phraseWordArray = phaseWordList.toArray(new String[phaseWordList.size()]);
+                	double scoreCandidateWeight=confusionsetloader.generateWeight(phraseWordArray, typoPosition);
+                	double editWeight=(Double)scoreCandidate.get(1);
+                	//scoreCandidateWeight=0.0;
+                	double logEditWeight=Math.log(editWeight);
+                	double totalWeight=logEditWeight+scoreCandidateWeight;
+                	System.out.println(scoreCandidate.get(0)+" "+totalWeight+" "+logEditWeight+" "+scoreCandidateWeight);
+                	scoreCandidateCounter+=1;
+                	if(scoreCandidateCounter>10)
+                	{
+                		break;
+                	}
+                }
+            }
         }
-
-        System.out.println(confusionsetloader.nGramCounts.get("a beam"));
-        String query = "piece of mind";
-        String[] words = query.split(" ");
-        double weight1 = confusionsetloader.generateWeight(words, 0);
-        double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
-        System.out.println(weight1);
-        System.out.println(weight2);
-
-        String query1 = "chocolate cake";
-        String query2 = "chocolate fake";
-        String[] words1 = query1.split(" ");
-        String[] words2 = query2.split(" ");
-        //double weight1 = confusionsetloader.generateWeight(words1,1);
-        //double weight2 = confusionsetloader.generateWeight(words2,1);
-        //System.out.println(weight1);
-        //System.out.println(weight2);	
-        String[] words3 = "roof of the house".split(" ");
-        String[] words4 = "peace of mind".split(" ");
-        confusionsetloader.generateCandidatePhrases("peace of mind");
-        confusionsetloader.generateConfusionIndices("peace of mind");
-        System.out.println(confusionsetloader.generateWeight(words3,0));
-        ArrayList<String> nGramList=confusionsetloader.generateNGrams(words4,0);
-        System.out.println(nGramList);
-        System.out.println(confusionsetloader.weighNGrams(nGramList));
-        confusionsetloader.spellCheckPhrase("arid dessert");
-        
     }
 
+    /*
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
         HashMap<String, Integer> priors = new HashMap<String, Integer>();
@@ -133,7 +80,6 @@ public class Test {
         return data;
     }
 
-    public static 
     private static void loadFiles(String filename, HashMap<String, Integer> table) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -146,5 +92,23 @@ public class Test {
         } catch (Exception e) {
             System.out.println("Not able to read files");
         }
-    }
+    }*/
 }
+/*
+while(true) {
+    String typo = terminalInput.nextLine();
+    long startTime = System.currentTimeMillis();
+    List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
+    Ranker ranker = new Ranker(data);
+    List<List<Object>> scores = ranker.getScores(candidates, typo);
+    long endTime = System.currentTimeMillis();
+    for (int i = 0; i < candidates.size() && i < 20; ++i) {
+        if (Double.compare((Double) scores.get(i).get(1), 0.0) != 0) {
+            System.out.println(scores.get(i).get(0) + "\t" + scores.get(i).get(1));
+        }
+
+    }
+    System.out.println("Total time taken: " + (endTime - startTime));
+}
+    break;
+}*/

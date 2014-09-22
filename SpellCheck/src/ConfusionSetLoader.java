@@ -15,10 +15,10 @@ public class ConfusionSetLoader
 	public ConfusionSetLoader() {
 	    this.loadFiles("confusion_sets.csv");
         this.populateIndex();
-        this.addNGramCounts("ngram-counts/w2_.txt");
-        this.addNGramCounts("ngram-counts/w3_.txt");
-        this.addNGramCounts("ngram-counts/w4_.txt");
-        this.addNGramCounts("ngram-counts/w5_.txt");
+        Utils.addNGramCounts("ngram-pos/w2c_mapped.txt", nGramCounts);
+        Utils.addNGramCounts("ngram-pos/w3c_mapped.txt", nGramCounts);
+        Utils.addNGramCounts("ngram-pos/w4c_mapped.txt", nGramCounts);
+        Utils.addNGramCounts("ngram-pos/w5c_mapped.txt", nGramCounts);
 	}
 
     private void loadFiles(String filename) {
@@ -50,44 +50,6 @@ public class ConfusionSetLoader
     			confusionReverseIndex.put(confusionWord,confusionSet);
     		}
     	}
-    }
-
-    public void addNGramCounts(String filename) {
-        int nGramsLoadedCount=0;
-    	try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\t");
-                double nGramCount=Double.parseDouble(parts[0]);
-                nGramsLoadedCount+=nGramCount;
-                String nGram="";
-                int counter=0;
-                for(String part:parts)
-                {
-                	if(counter==0)
-                	{
-                		counter+=1;
-                		continue;
-                	}
-                	if(counter==1)
-                	{
-                		nGram=part;
-                	}
-                	else
-                	{
-                		nGram=nGram+" "+part;
-                	}
-                	counter+=1;
-                }
-                nGramCounts.put(nGram,nGramCount);
-            }
-            reader.close();
-            
-        } catch (Exception e) {
-            System.out.println("Not able to read files");
-        }
-    	System.out.println(nGramsLoadedCount);
     }
 
     public ArrayList<Integer> generateConfusionIndices(String phrase)
@@ -163,7 +125,6 @@ public class ConfusionSetLoader
         double denominator = 0;
         int sizeOfPhrase = phrase.length;
         String confusionWord = phrase[confusionIndex];
-        List<String> ngrams = new ArrayList<String>();
         List<String> leftGrams = new ArrayList<String>(); // small to big
         String leftString = "";
         int countCounter = 0;
@@ -184,7 +145,6 @@ public class ConfusionSetLoader
             denominator += Math.log(TOTAL_COUNT[countCounter]);
             countCounter++;
         }
-        List<String> mergedGrams = new ArrayList<String>();
         for (int i = 0; i < leftGrams.size(); ++i) {
             for (int j = 0; j < rightGrams.size(); ++j) {
                 if (i + j + 3 > 5) {
@@ -206,18 +166,17 @@ public class ConfusionSetLoader
 
     public ArrayList<String> generateNGrams(String[] phrase, int confusionIndex) {
     	ArrayList<String> nGramList=new ArrayList<String>();
-        double weight = 0;
-        double denominator = 0;
+        // double weight = 0;
+        // double denominator = 0;
         int sizeOfPhrase = phrase.length;
         String confusionWord = phrase[confusionIndex];
-        List<String> ngrams = new ArrayList<String>();
         List<String> leftGrams = new ArrayList<String>(); // small to big
         String leftString = "";
         int countCounter = 0;
         for (int i = confusionIndex - 1; i >= 0 && i >= confusionIndex - 4; --i) {
             leftString = phrase[i] + " " + leftString;
             leftGrams.add(leftString);
-            denominator += Math.log(TOTAL_COUNT[countCounter]);
+            // denominator += Math.log(TOTAL_COUNT[countCounter]);
             countCounter++;
         }
         List<String> rightGrams = new ArrayList<String>();
@@ -227,12 +186,11 @@ public class ConfusionSetLoader
         for (int i = confusionIndex + 1; i < sizeOfPhrase && i <= confusionIndex + 4; ++i) {
             rightString = rightString + " " + phrase[i];
             rightGrams.add(rightString);
-            weight += Math.log(1 + getCount(rightString));
+            // weight += Math.log(1 + getCount(rightString));
             nGramList.add(rightString);
-            denominator += Math.log(TOTAL_COUNT[countCounter]);
+            // denominator += Math.log(TOTAL_COUNT[countCounter]);
             countCounter++;
         }
-        List<String> mergedGrams = new ArrayList<String>();
         for (int i = 0; i < leftGrams.size(); ++i) {
             for (int j = 0; j < rightGrams.size(); ++j) {
                 if (i + j + 3 > 5) {
@@ -240,13 +198,13 @@ public class ConfusionSetLoader
                 }
                 //mergedGrams.add(leftGrams.get(i) + " " + rightGrams.get(j));
                 // TODO: 
-                weight += Math.log(1 + getCount(leftGrams.get(i) + " " + rightGrams.get(j)));
+                // weight += Math.log(1 + getCount(leftGrams.get(i) + " " + rightGrams.get(j)));
                 nGramList.add(leftGrams.get(i) + " " + rightGrams.get(j));
-                denominator += Math.log(TOTAL_COUNT[i + j + 1]);
+                // denominator += Math.log(TOTAL_COUNT[i + j + 1]);
             }
             //mergedGrams.add(leftGrams.get(i) + " " + confusionWord);
            //System.out.println(leftGrams.get(i) + " " + confusionWord); //Write a wrapper
-            weight += Math.log(1 + getCount(leftGrams.get(i) + " " + confusionWord));
+           // weight += Math.log(1 + getCount(leftGrams.get(i) + " " + confusionWord));
             nGramList.add(leftGrams.get(i) + " " + confusionWord);
         }
         //System.out.println(weight - denominator);
