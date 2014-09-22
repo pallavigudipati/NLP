@@ -9,5 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/ajt-1.20.jar"/>
 	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/commons-math-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/javaml-0.1.5/lib/Jama-1.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/host/Users/Pallavi/Desktop/Acads/sem-7/NLP/NLP/SpellCheck/stanford-postagger-2014-08-27/stanford-postagger.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

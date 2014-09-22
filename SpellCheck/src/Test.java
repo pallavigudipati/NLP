@@ -7,19 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-<<<<<<< HEAD
-import weka.core.tokenizers.NGramTokenizer;
-import libsvm.LibSVM;
-import libsvm.svm_parameter;
-import net.sf.javaml.classification.Classifier;
-import edu.berkeley.compbio.jlibsvm.SVM;
-import edu.berkeley.compbio.jlibsvm.SvmProblem;
-import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
-import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblem;
-import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
-
-=======
->>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 public class Test {
 
     public static void main(String[] args) throws FileNotFoundException,
@@ -27,7 +14,6 @@ public class Test {
         BKTree bktree = new BKTree();
 
         // String typo = "aisel";
-        /*
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
 
@@ -46,7 +32,8 @@ public class Test {
 
             }
             System.out.println("Total time taken: " + (endTime - startTime));
-        }*/
+        }
+        /*
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
@@ -62,8 +49,8 @@ public class Test {
         double weight2 = confusionsetloader.generateWeight(new String[]{"peace" ,"of","mind"}, 0);
         System.out.println(weight1);
         System.out.println(weight2);
+        */
     }
->>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
 
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
