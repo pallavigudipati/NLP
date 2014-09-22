@@ -8,10 +8,20 @@ public class ConfusionSetLoader
 	public static int QUADGRAM_COUNT=46030908;	
 	public static int PENTAGRAM_COUNT=16451820;
 	public static int[] TOTAL_COUNT = {BIGRAM_COUNT, TRIGRAM_COUNT, QUADGRAM_COUNT, PENTAGRAM_COUNT};
-	public static ArrayList<ConfusionSet> confusionSetList = new ArrayList<ConfusionSet>();
-	public static HashMap<String,ConfusionSet> confusionReverseIndex = new HashMap<String,ConfusionSet>();
-	public static HashMap<String,Double> nGramCounts = new HashMap<String,Double>();
-    public static void loadFiles(String filename) {
+	public ArrayList<ConfusionSet> confusionSetList = new ArrayList<ConfusionSet>();
+	public HashMap<String,ConfusionSet> confusionReverseIndex = new HashMap<String,ConfusionSet>();
+	public HashMap<String,Double> nGramCounts = new HashMap<String,Double>();
+	
+	public ConfusionSetLoader() {
+	    this.loadFiles("confusion_sets.csv");
+        this.populateIndex();
+        this.addNGramCounts("ngram-counts/w2_.txt");
+        this.addNGramCounts("ngram-counts/w3_.txt");
+        this.addNGramCounts("ngram-counts/w4_.txt");
+        this.addNGramCounts("ngram-counts/w5_.txt");
+	}
+
+    private void loadFiles(String filename) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line = null;
@@ -30,7 +40,8 @@ public class ConfusionSetLoader
             System.out.println("Not able to read files");
         }
     }
-    public static void populateIndex()
+
+    public void populateIndex()
     {
     	for(ConfusionSet confusionSet:confusionSetList)
     	{
@@ -40,7 +51,8 @@ public class ConfusionSetLoader
     		}
     	}
     }
-    public static void addNGramCounts(String filename) {
+
+    public void addNGramCounts(String filename) {
         int nGramsLoadedCount=0;
     	try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -77,7 +89,8 @@ public class ConfusionSetLoader
         }
     	System.out.println(nGramsLoadedCount);
     }
-    public static ArrayList<Integer> generateConfusionIndices(String phrase)
+
+    public ArrayList<Integer> generateConfusionIndices(String phrase)
     {
     	ArrayList<Integer> indiceList=new ArrayList<Integer>();
     	String[] words=phrase.split(" ");
@@ -92,6 +105,7 @@ public class ConfusionSetLoader
     	}
     	return indiceList;
     }
+
     public ArrayList<String> generateCandidatePhrases(String phrase)
     {
     	ArrayList<String> phraseSet=new ArrayList<String>();
@@ -134,6 +148,7 @@ public class ConfusionSetLoader
     	System.out.println(phraseSet);
     	return phraseSet;
     }
+
     public double getCount(String ngram)
     {
     	Double ngramCount = nGramCounts.get(ngram); 
@@ -142,6 +157,7 @@ public class ConfusionSetLoader
     	}
     	return ngramCount;
     }
+
     public double generateWeight(String[] phrase, int confusionIndex) {
         double weight = 0;
         double denominator = 0;
@@ -187,6 +203,7 @@ public class ConfusionSetLoader
         //System.out.println(mergedGrams);
         return weight - denominator;
     }
+
     public ArrayList<String> generateNGrams(String[] phrase, int confusionIndex) {
     	ArrayList<String> nGramList=new ArrayList<String>();
         double weight = 0;
@@ -236,7 +253,7 @@ public class ConfusionSetLoader
         //System.out.println(weight);
         return nGramList;
     }
-    
+
     public double weighNGrams(ArrayList<String> ngrams)
     {
     	double weight=0.0;
@@ -253,6 +270,7 @@ public class ConfusionSetLoader
     	}
     	return weight - denominator;
     }
+
     public void spellCheckPhrase(String phrase)
     {
     	ArrayList<String> candidatePhrases=generateCandidatePhrases(phrase);

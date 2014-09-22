@@ -44,8 +44,17 @@ public class Test {
         }*/
         String typedPhrase=terminalInput.nextLine();
         ArrayList<Integer> typoPositions=new ArrayList<Integer>();
-        typoPositions.add(0);
+        //typoPositions.add(0);
+        String[] phraseWordArray=typedPhrase.split(" ");
+        for(int i=0;i<phraseWordArray.length;i++)
+        {
+        	if(!bktree.wordDictionary.containsKey(phraseWordArray[i]))
+        	{
+        		typoPositions.add(i);
+        	}
+        }
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
+        /*
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
         System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
@@ -53,6 +62,7 @@ public class Test {
         confusionsetloader.addNGramCounts("ngram-counts/w3_.txt");
         confusionsetloader.addNGramCounts("ngram-counts/w4_.txt");
         confusionsetloader.addNGramCounts("ngram-counts/w5_.txt");
+        */
         for(int typoPosition:typoPositions)
         {
         	String[] phraseWords=typedPhrase.split(" ");
@@ -123,6 +133,7 @@ public class Test {
         return data;
     }
 
+    public static 
     private static void loadFiles(String filename, HashMap<String, Integer> table) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
