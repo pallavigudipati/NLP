@@ -7,35 +7,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-<<<<<<< HEAD
-import weka.core.tokenizers.NGramTokenizer;
-import libsvm.LibSVM;
-import libsvm.svm_parameter;
-import net.sf.javaml.classification.Classifier;
-import edu.berkeley.compbio.jlibsvm.SVM;
-import edu.berkeley.compbio.jlibsvm.SvmProblem;
-import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
-import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblem;
-import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
 
-=======
->>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
+
 public class Test {
 
     public static void main(String[] args) throws FileNotFoundException,
             IOException {
-<<<<<<< HEAD
+
       
-    	/*
-=======
->>>>>>> e663c15324a59662eb4866742fdfb9c577636e45
+    	
         BKTree bktree = new BKTree();
         bktree.ConstructBKTree("cleaned_counts_big.txt");
         List<HashMap> data = loadData();
 
         Scanner terminalInput = new Scanner(System.in);
+        /*
         while(true) {
-            String typo = terminalInput.nextLine();;
+            String typo = terminalInput.nextLine();
             long startTime = System.currentTimeMillis();
             List<String> candidates = new ArrayList<String>(bktree.Search(typo, 3));
             Ranker ranker = new Ranker(data);
@@ -49,27 +37,53 @@ public class Test {
             }
             System.out.println("Total time taken: " + (endTime - startTime));
             break;
-        }
-        */
+        }*/
+        String typedPhrase=terminalInput.nextLine();
+        ArrayList<Integer> typoPositions=new ArrayList<Integer>();
+        typoPositions.add(0);
         ConfusionSetLoader confusionsetloader=new ConfusionSetLoader();
         confusionsetloader.loadFiles("confusion_sets.csv");
         confusionsetloader.populateIndex();
-        /*
         System.out.println(confusionsetloader.confusionReverseIndex.get("piece").candidates);
         confusionsetloader.addNGramCounts("w2_.txt");
         confusionsetloader.addNGramCounts("w3_.txt");
         confusionsetloader.addNGramCounts("w4_.txt");
         confusionsetloader.addNGramCounts("w5_.txt");
+        for(int typoPosition:typoPositions)
+        {
+        	String[] phraseWords=typedPhrase.split(" ");
+        	List<String> candidates = new ArrayList<String>(bktree.Search(phraseWords[typoPosition], 3));
+            Ranker ranker = new Ranker(data);
+            List<List<Object>> scores = ranker.getScores(candidates,phraseWords[typoPosition]);
+            System.out.println(scores);
+            int scoreCandidateCounter=0;
+            for(List<Object> scoreCandidate:scores)
+            {
+            	phraseWords[typoPosition]=(String)scoreCandidate.get(0);
+            	double scoreCandidateWeight=confusionsetloader.generateWeight(phraseWords, typoPosition);
+            	double editWeight=(Double)scoreCandidate.get(1);
+            	//scoreCandidateWeight=0.0;
+            	double logEditWeight=Math.log(editWeight);
+            	double totalWeight=logEditWeight+scoreCandidateWeight;
+            	System.out.println(scoreCandidate.get(0)+" "+totalWeight+" "+logEditWeight+" "+scoreCandidateWeight);
+            	scoreCandidateCounter+=1;
+            	if(scoreCandidateCounter>10)
+            	{
+            		break;
+            	}
+            }
+        }
+
         System.out.println(confusionsetloader.nGramCounts.get("a beam"));
         String query1 = "chocolate cake";
         String query2 = "chocolate fake";
         String[] words1 = query1.split(" ");
         String[] words2 = query2.split(" ");
-        double weight1 = confusionsetloader.generateWeight(words1,1);
-        double weight2 = confusionsetloader.generateWeight(words2,1);
-        System.out.println(weight1);
-        System.out.println(weight2);*/
-        String[] words3 = "peace of mind".split(" ");
+        //double weight1 = confusionsetloader.generateWeight(words1,1);
+        //double weight2 = confusionsetloader.generateWeight(words2,1);
+        //System.out.println(weight1);
+        //System.out.println(weight2);	
+        String[] words3 = "roof of the house".split(" ");
         String[] words4 = "peace of mind".split(" ");
         confusionsetloader.generateCandidatePhrases("peace of mind");
         confusionsetloader.generateConfusionIndices("peace of mind");
@@ -77,9 +91,10 @@ public class Test {
         ArrayList<String> nGramList=confusionsetloader.generateNGrams(words4,0);
         System.out.println(nGramList);
         System.out.println(confusionsetloader.weighNGrams(nGramList));
-        List<List<Object>> phrase_scores=confusionsetloader.spellCheckPhrase();
+        confusionsetloader.spellCheckPhrase("arid dessert");
+        
     }
->>>>>>> 204a41828c1b7e8d915a9bcd7eaa5f22c8d46fc2
+
 
     public static List<HashMap> loadData() {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();

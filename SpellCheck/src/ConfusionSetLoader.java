@@ -92,7 +92,7 @@ public class ConfusionSetLoader
     	}
     	return indiceList;
     }
-    public static void generateCandidatePhrases(String phrase)
+    public ArrayList<String> generateCandidatePhrases(String phrase)
     {
     	ArrayList<String> phraseSet=new ArrayList<String>();
     	phraseSet.add(phrase);
@@ -132,6 +132,7 @@ public class ConfusionSetLoader
     		counter+=1;
     	}
     	System.out.println(phraseSet);
+    	return phraseSet;
     }
     public double getCount(String ngram)
     {
@@ -227,12 +228,12 @@ public class ConfusionSetLoader
                 denominator += Math.log(TOTAL_COUNT[i + j + 1]);
             }
             //mergedGrams.add(leftGrams.get(i) + " " + confusionWord);
-           System.out.println(leftGrams.get(i) + " " + confusionWord); //Write a wrapper
+           //System.out.println(leftGrams.get(i) + " " + confusionWord); //Write a wrapper
             weight += Math.log(1 + getCount(leftGrams.get(i) + " " + confusionWord));
             nGramList.add(leftGrams.get(i) + " " + confusionWord);
         }
-        System.out.println(weight - denominator);
-        System.out.println(weight);
+        //System.out.println(weight - denominator);
+        //System.out.println(weight);
         return nGramList;
     }
     
@@ -244,13 +245,38 @@ public class ConfusionSetLoader
     	{
     		weight+=Math.log(1+getCount(ngram));
     		String[] words=ngram.split(" ");
+    		if(words.length>5)
+    		{
+    			continue;
+    		}
     		denominator+=Math.log(TOTAL_COUNT[words.length-2]);
     	}
     	return weight - denominator;
     }
-    public List<List<Object>> spellCheckPhrase(String phrase)
+    public void spellCheckPhrase(String phrase)
     {
-    	
+    	ArrayList<String> candidatePhrases=generateCandidatePhrases(phrase);
+    	ArrayList<Integer> confusionIndices=generateConfusionIndices(phrase);
+    	for(String candidatePhrase:candidatePhrases)
+    	{
+    		HashMap<String,Integer> contextNGrams=new HashMap<String,Integer>();
+    		for(int confusionIndice:confusionIndices)
+    		{
+    			String[] words=candidatePhrase.split(" ");
+    			ArrayList<String> nGramList=generateNGrams(words,confusionIndice);
+    			for(String nGram:nGramList)
+    			{
+    				contextNGrams.put(nGram,1);
+    			}
+    		}
+    		ArrayList<String> nGramsUnion=new ArrayList<String>();
+    		for(String nGram:contextNGrams.keySet())
+    		{
+    			nGramsUnion.add(nGram);
+    		}
+    		double weight=weighNGrams(nGramsUnion);
+    		System.out.println(candidatePhrase+weight);
+    	}
     }
     
 }
