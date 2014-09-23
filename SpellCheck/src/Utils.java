@@ -70,4 +70,45 @@ public class Utils {
         System.out.println(nGramsLoadedCount);
     }
 
+    // Eg. do_score 1
+    public static void loadContextWords(String filename,
+            HashMap<String, HashMap<String, Double>> contextWords) {
+        if (contextWords == null) {
+            contextWords = new HashMap<String, HashMap<String, Double>>();
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                String[] count = line.split(" ");
+                String[] words = count[0].split("_");
+                if (contextWords.get(words[0]) == null) {
+                    contextWords.put(words[0], new HashMap<String, Double> ());
+                }
+                contextWords.get(words[0]).put(words[1], Double.parseDouble(count[1]));
+            }
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Not able to read files: " + filename);
+        }
+    }
+
+    // Eg. fawn 1
+    public static void loadBrownCounts(String filename, HashMap<String, Integer> counts) {
+        if (counts == null) {
+            counts = new HashMap<String, Integer>();
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ");
+                counts.put(parts[0], Integer.parseInt(parts[1]));
+            }
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Not able to read files: " + filename);
+        }
+    }
 }
