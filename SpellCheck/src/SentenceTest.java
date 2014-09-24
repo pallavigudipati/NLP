@@ -9,7 +9,7 @@ public class SentenceTest {
     private BKTree bkTree;
     private List<HashMap> countsData;
     private POSTagger posTagger;
-    private ConfusionSetLoader confusionSetLoader;
+    private NgramModel ngramModel;
 
     public SentenceTest() {
         bkTree = new BKTree();
@@ -20,7 +20,7 @@ public class SentenceTest {
         }
         countsData = Utils.loadCountsData();
         posTagger = new POSTagger();
-        confusionSetLoader = new ConfusionSetLoader();
+        ngramModel = new NgramModel();
     }
 
     public void correctSentence() {
@@ -46,11 +46,9 @@ public class SentenceTest {
                 int scoreCandidateCounter = 0;
                 for (List<Object> scoreCandidate : scores) {
                     phraseWordArrayRaw[typoPosition] = (String) scoreCandidate.get(0);
-                    List<String> phaseWordList = posTagger.tagSentence(StringUtils
+                    String[] phaseWordArray = posTagger.tagSentence(StringUtils
                             .join(phraseWordArrayRaw, " "));
-                    String[] phraseWordArray = phaseWordList
-                            .toArray(new String[phaseWordList.size()]);
-                    double scoreCandidateWeight = confusionSetLoader
+                    double scoreCandidateWeight = ngramModel
                             .generateWeight(phraseWordArray, typoPosition);
                     double editWeight = (Double) scoreCandidate.get(1);
                     // scoreCandidateWeight=0.0;

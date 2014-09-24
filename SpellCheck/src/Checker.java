@@ -2,14 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-public class Classifier {
+public class Checker {
     private HashMap<String, Integer> ngramCounts;
 
-    public Classifier() {
-        
-    }
-
+    // Ngram based weight generation 
     public double generateWeight(String[] phrase, int confusionIndex) {
         double weight = 0;
         int sizeOfPhrase = phrase.length;
@@ -24,7 +20,8 @@ public class Classifier {
         List<String> rightGrams = new ArrayList<String>();
         String rightString = phrase[confusionIndex];
         // String rightString = "";
-        for (int i = confusionIndex + 1; i < sizeOfPhrase && i <= confusionIndex + 4; ++i) {
+        for (int i = confusionIndex + 1; i < sizeOfPhrase
+                && i <= confusionIndex + 4; ++i) {
             rightString = rightString + " " + phrase[i];
             rightGrams.add(rightString);
             weight += Math.log(1 + ngramCounts.get(rightString));
@@ -36,13 +33,17 @@ public class Classifier {
                     break;
                 }
                 // mergedGrams.add(leftGrams.get(i) + " " + rightGrams.get(j));
-                // TODO: 
-                weight += Math.log(1 + ngramCounts.get(leftGrams.get(i) + " " + rightGrams.get(j)));
+                // TODO:
+                weight += Math.log(1 + ngramCounts.get(leftGrams.get(i) + " "
+                        + rightGrams.get(j)));
             }
             // mergedGrams.add(leftGrams.get(i) + " " + confusionWord);
-            weight += Math.log(1 + ngramCounts.get(leftGrams.get(i) + " " + confusionWord));
+            weight += Math.log(1 + ngramCounts.get(leftGrams.get(i) + " "
+                    + confusionWord));
         }
         // mergedGrams.addAll(rightGrams);
         return weight;
     }
+
+
 }

@@ -24,6 +24,14 @@ public class Utils {
         return data;
     }
 
+    public static String concat(String[] words, int fromIndex, int toIndex) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = fromIndex; i < toIndex; i++) {
+            builder.append((i > fromIndex ? " " : "") + words[i]);
+        }
+        return builder.toString();
+    }
+
     private static void loadFiles(String filename, HashMap<String, Integer> table) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -34,7 +42,7 @@ public class Utils {
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println("Not able to read files");
+            System.out.println("Not able to read files: " + filename);
         }
     }
 
@@ -65,7 +73,7 @@ public class Utils {
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println("Not able to read files");
+            System.out.println("Not able to read files: " + filename);
         }
         System.out.println(nGramsLoadedCount);
     }
@@ -80,7 +88,7 @@ public class Utils {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line = null;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                // System.out.println(line);
                 String[] count = line.split(" ");
                 String[] words = count[0].split("_");
                 if (contextWords.get(words[0]) == null) {
