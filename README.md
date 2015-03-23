@@ -1,2 +1,2 @@
-NLP
+Context Sensitive Spell-checker
 ===
